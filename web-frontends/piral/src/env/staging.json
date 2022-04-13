@@ -1,0 +1,4 @@
+{
+    "apiGatewayUrl": "https://stg-mloca-bff.mcapps.jp/api",
+    "graphqlGatewayUrl": "https://stg-mloca-bff.mcapps.jp/graphql"
+}

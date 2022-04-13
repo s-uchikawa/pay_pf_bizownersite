@@ -1,0 +1,27 @@
+{
+  "name": "paypf-bizowner-ui-elements",
+  "version": "0.1.0",
+  "description": "",
+  "module": "dist/esm/index.js",
+  "main": "dist/lib/index.js",
+  "typings": "dist/lib/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/esm",
+    "dist/lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "npm run build:style && yarn build:commonjs && yarn build:esnext && yalc publish",
+    "build:style": "postcss src/styles/tailwind.pcss -o src/styles/tailwind.css",
+    "build:commonjs": "tsc --project tsconfig.json --outDir dist/lib --module commonjs && cpx src/styles/tailwind.css dist/lib/styles",
+    "build:esnext": "tsc --project tsconfig.json --outDir dist/esm --module esnext && cpx src/styles/tailwind.css dist/esm/styles",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "yalcSig": "45ede06135c741b9b4477d5649444e5d"
+}

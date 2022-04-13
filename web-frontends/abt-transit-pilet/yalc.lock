@@ -1,0 +1,8 @@
+{
+  "version": "v1",
+  "packages": {
+    "paypf-bizowner-ui-elements": {
+      "signature": "45ede06135c741b9b4477d5649444e5d"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+    "apiGatewayUrl": "https://localhost:5001/api",
+    "graphqlGatewayUrl": "https://localhost:5001/graphql"
+}

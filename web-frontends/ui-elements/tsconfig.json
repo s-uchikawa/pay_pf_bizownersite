@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "lib": ["dom", "es2015", "es2018"],
+        "jsx": "react",
+        "importHelpers": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6",
+        "sourceMap": true
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "dist",
+        "node_modules",
+        "src/**/node_modules",
+        "src/**/lib",
+        "**/*.test.ts",
+        "**/*.test.tsx"        
+    ]
+}

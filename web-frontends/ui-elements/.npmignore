@@ -1,0 +1,7 @@
+/node_modules
+/test
+tsconfig.json
+postcss.config.js
+tailwind.config.js
+
+

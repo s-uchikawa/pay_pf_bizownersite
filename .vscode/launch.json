@@ -1,0 +1,60 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/backend-api/mloca-bff/bin/Debug/net5.0/mloca-bff.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/backend-api/mloca-bff",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "Docker .NET Core Attach",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        },        
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
+            "name": "Kubernetes: Run/Debug",
+            "type": "cloudcode.kubernetes",
+            "request": "launch",
+            "skaffoldConfig": "${workspaceFolder}\\skaffold.yaml",
+            "watch": true,
+            "cleanUp": false,
+            "portForward": true,
+            "debug": [
+                {
+                    "image": "mloca-bff",
+                    "sourceFileMap": {
+                        "${workspaceFolder}": "/"
+                    }
+                }
+            ],
+            "imageRegistry": "984452622757.dkr.ecr.us-west-1.amazonaws.com"
+        },        
+    ]
+}

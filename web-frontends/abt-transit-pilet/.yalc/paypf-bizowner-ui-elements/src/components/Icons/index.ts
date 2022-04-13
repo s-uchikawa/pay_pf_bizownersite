@@ -1,0 +1,11 @@
+export { Download as DownloadIcon } from './download';
+export { Filter as FilterIcon } from './filter';
+export { Plus as PlusIcon } from './plus';
+export { Search as SearchIcon } from './search';
+export { NavigateNext as NavigateNextIcon } from './navigateNext';
+export { NavigateBefore as NavigateBeforeIcon } from './navigateBefore';
+export { DotsHorizontal as DotsHorizontalIcon } from './dots-horizontal';
+export { Upload as UploadIcon } from './upload';
+export { Loading as LoadingIcon } from './loading';
+export { Refresh as RefreshIcon } from './refresh';
+export { IconProps } from './types';
