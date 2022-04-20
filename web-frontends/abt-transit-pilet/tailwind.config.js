@@ -3,7 +3,7 @@ module.exports = {
     enabled: true,
     content: ['./src/components/**/*.tsx']
   },
-  prefix: 'mpp-',
+  prefix: 'abt-tr-',
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {

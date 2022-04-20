@@ -14,22 +14,6 @@ export function createAuthApi(client: AuthClient): PiralPlugin<AuthApi> {
       getAccessToken() {
         return client.token();
       },
-      getRegion() {
-        return new Promise<'jp' | 'us'>((resolve, reject) => {
-          // トークンクレームからregionを取得
-          if (client.token) {
-            client.token().then(value => {
-              const jwt = jwtDecode<JwtPayload>(value);
-              if (jwt["region"] == 'us') {
-                resolve('us');
-              }
-              resolve('jp');
-            });
-          } else {
-            resolve('jp');
-          }
-        });
-      },
     };
   }
 }

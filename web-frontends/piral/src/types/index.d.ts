@@ -2,7 +2,6 @@ import 'piral-core';
 
 declare global {
   interface Window{
-    googleMapsApiKey: string
   }
 }
 

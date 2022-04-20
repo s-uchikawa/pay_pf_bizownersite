@@ -1,5 +1,5 @@
 import { MessageIds } from "./messages";
-import { ErrorMessage } from "./models/types";
+import { ErrorMessage } from "./models/general-types";
 
 /**
  * エラーハンドリング用のユーティリティ

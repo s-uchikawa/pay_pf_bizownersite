@@ -1,5 +1,7 @@
 # 開発環境
 
+## web-frontendsの開発環境
+
 1. 開発中のnpmパッケージをローカルで確認するためにyalcをインストールします。  
    ```
    yarn global add yalc
@@ -14,148 +16,30 @@
    yarn install
    ```
 
+## backend-apiの開発環境
+
+1. AWS SAM CLI のインストール
+   参考サイト) [Installing the AWS SAM CLI on Windows](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-windows.html)
+
+   - Install the AWS SAM CLI [64-bit](https://github.com/aws/aws-sam-cli/releases/latest/download/AWS_SAM_CLI_64_PY3.msi)
+
 # デバッグ
 
-1. ローカルデバッグ
+1. backend-apiの起動
+   ```
+   cd backend-api
+   sam build
+   sam local start-api
+   ```
+   
+1. web-frontendsの実行  
+   1. web-frontendsの下の各フォルダのREADME.mdを参照して下さい。
 
-   - web-frontendsの実行  
-     1. web-frontendsの下の各フォルダのREADME.mdを参照して下さい。
-
-     1. ログイン画面は用意されていないのでモバロケのメインWEBからCookieにトークンを格納して遷移しない場合は、次の手順を行い認証情報を格納します。
-     
-     1. https://localhost:1234 を開きます
-
-     1. モバロケのトークンを取得します。  
-        例. 日本のステージング環境
-        ```
-        curl -X POST "https://stg-ajt-mloca-eb.mcapps.jp/api/v1/Tokens" -H "accept: application/json" -H "Content-Type: application/json-patch+json" -d "{\"customerCd\":\"MCDEMO\",\"userId\":\"mc\",\"password\":\"mc\",\"gtfsFeedId\":0}"
-        ```
-     
-     1. LocalStorageにモバロケのトークンを格納  
-        ブラウザの開発者ツールのコンソールから次のコマンドを実行
-        ```
-        localStorage.setItem('mloca_token', '<取得したアクセストークン("accessToken":"(この部分)", "idToken":・・・)>');
-        ```
+   TBD
 
 # デプロイ
 
-## mloca-bff
-
-1. dockerイメージをECRへプッシュ
-   1. 次のコマンドでコンテナイメージを作成します。
-      ※ ルートパス(deploymentsフォルダの一つ上の階層)から実行します
-      ```
-      docker build -t mloca-bff:latest -f deployments/docker/Dockerfile .
-
-      ```
-   1. コンテナイメージのタグ付け
-      ```
-　    --　ステージング
-      docker tag mloca-bff:latest 984452622757.dkr.ecr.us-west-1.amazonaws.com/mloca-bff:<バージョン>
-
-　    --　本番
-      docker tag mloca-bff:latest 128027848612.dkr.ecr.ap-northeast-1.amazonaws.com/mloca-bff:<バージョン>
-      ```
-
-   1. ECRにコンテナイメージをプッシュ
-      ※ 事前にAWS ECRでリポジトリを選択し、URIを確認
-
-      ```
-　    --　ステージング
-      docker push 984452622757.dkr.ecr.us-west-1.amazonaws.com/mloca-bff:<バージョン>
-
-　    --　本番
-      docker push 128027848612.dkr.ecr.ap-northeast-1.amazonaws.com/mloca-bff:<バージョン>
-      ```
-
-      Your Authorization Token has expired. Please run ‘aws ecr get-login’ to fetch a new one.
-      や
-      denied: Your authorization token has expired. Reauthenticate and try again.
-      というメッセージが出た場合は、
-      ```
-      # AWS Cli 1の場合
-      aws ecr get-login --region us-west-1
- 
-      # 取得した結果を打ち込む  
-      docker login -u AWS -p トークン https://984452622757.dkr.ecr.us-west-1.amazonaws.com
-      ※ -e none は不要！！
-
-      # AWS Cli 2の場合
-      -- ステージング
-      aws ecr get-login-password | docker login --username AWS --password-stdin https://984452622757.dkr.ecr.us-west-1.amazonaws.com      
-
-      -- 本番
-      aws ecr get-login-password | docker login --username AWS --password-stdin https://128027848612.dkr.ecr.ap-northeast-1.amazonaws.com      
-      ```
-## paypf-bizowner-piral
-
-1. paypf-bizowner-ui-elementsフォルダに移動し以下のコマンドを実行しアプリケーションをビルドします
-   ```
-   yarn build
-   ```
-   ※ 以前のデプロイから変更がある場合は、package.jsonのversionが更新されていることを確認してください
-
-1. paypf-bizowner-piralフォルダに移動し以下のコマンドを実行しアプリケーションをビルドします
-   ```
-   yarn install
-
-   -- ステージング
-   yarn build:stg
-   -- 本番
-   yarn build:prod
-   ```
-   ※ 以前のデプロイから変更がある場合は、package.jsonのversionが更新されていることを確認してください
-
-1. S3へアップロード
-   ```
-   aws s3 sync <ローカルパス> s3://<s3パケット> --delete --include "*" --acl public-read
-
-   -- ステージング
-   aws s3 sync ./dist/release s3://staging-mloca5-web --delete --include "*" --acl public-read --profile <AWSプロファイル名>
-
-   -- 本番
-   aws s3 sync ./dist/release s3://mloca5-web --delete --include "*" --acl public-read --profile <AWSプロファイル名>
-
-   ```
-
-1. CloudFrontのキャッシュをクリア
-   ```
-   aws cloudfront create-invalidation --distribution-id <distribution_ID> --paths "/*"
-   
-   -- ステージング
-   aws cloudfront create-invalidation --distribution-id E2EM1GYPDH88YO --paths "/*" --profile <AWSプロファイル名>
-
-   -- 本番
-   aws cloudfront create-invalidation --distribution-id E1A5J8QB2TFYQJ --paths "/*" --profile <AWSプロファイル名>
-   ```
-
-## pilet
-
-Piral Cloud Servicesを使います。
-Freeプランだと10Piletまでしか登録できないようなので、超えそうな場合は[サンプル実装](https://github.com/smapiot/sample-pilet-service)を元に自前実装とする。
-※ サンプル実装は設定がメモリに保持されてるっぽいのでDBに保持できるように改修が必要そうです。  
-[参考サイト](https://docs.piral.io/guidelines/tutorials/03-publishing-pilets)
-
-1. 事前条件
-   - [piralフィードサービス](https://www.piral.cloud/)でフィードを作成済み. (内川のMicrosoft個人アカウントで作成してます。)  
-     - フィード名: mloca5(ステージング),   mloca5_prod(本番)
-     - 許可するホスト: mloca5.us-west.gmc-apps.com, v5.mloca.com  
-   - paypf-bizowner-piral/index.tsxのfeedUrlに作成したフィードのURLが設定されている
-     - フィードURL: https://feed.piral.cloud/api/v1/pilet/mloca5(ステージング), https://feed.piral.cloud/api/v1/pilet/mloca5_prod(本番)
-   - フィードにアップロードするためのAPIキーが作成済み(APIキーの期限は1年) ※ 現在日=2021/12/14  
-     - APIキー: 
-       - 6db70430084df3ceec4bba54c0315ecba11a1fea323c1c43826500be4d8a4147(ステージング)
-       - 8fe3c879c5155ab62f45ae1bd537a63f44369b634201ffd0547fa558c8c90d57(本番)
-
-1. piletのフォルダで以下のコマンドを実行
-   ```
-   (ステージング)
-   npx pilet publish --fresh --url https://feed.piral.cloud/api/v1/pilet/mloca5 --api-key 6db70430084df3ceec4bba54c0315ecba11a1fea323c1c43826500be4d8a4147
-
-   (本番)
-   npx pilet publish --fresh --url https://feed.piral.cloud/api/v1/pilet/mloca5_prod --api-key 8fe3c879c5155ab62f45ae1bd537a63f44369b634201ffd0547fa558c8c90d57
-   ```
-   ※ 以前のデプロイから変更がある場合は、package.jsonのversionが更新されていることを確認してください
+TBD
 
 # 開発ガイドライン
 
@@ -164,7 +48,7 @@ Freeプランだと10Piletまでしか登録できないようなので、超え
 ### 概要
 
 次のような構成をとります。  
-Piral (１) --> (＊) Pilets (＊) --> (１) API Gateway (１) --> (＊) BFF (＊) --> (＊) Microservers
+Piral (１) --> (＊) Pilets (＊) --> (１) API Gateway (１) --> (＊) BFF (＊) --> (＊) Microservices
 
 [Piral](https://piral.io/), Piletsは、WEBフロントエンドを構成します。これはJavascriptフレームワークです。Piralはマイクロフロントエンドアーキテクチャを使ってポータルサイトを構築するのを支援するためのReactベースのフレームワークです。WEBフロントエンドの担当者は、コーディング前にガイドラインに一通り目を通すことをお勧めします。
 
@@ -180,12 +64,14 @@ PiletやBFFの分割方針は開発チーム単位だったり、機能グルー
 
 ### ユーザー認証
 
-モバロケのメインWEBサイトで認証されたトークンがCookieで渡されます。(キーは"mcapps_shared_token")。
-web-frontendsのURLドメインはモバロケのメインWEBサイトのURLドメインと同じである必要があります。
+TBD
 
 ## 依存ライブラリ
 
 開発時に主に利用するライブラリは以下。これらについて事前にある程度の学習を要する。
+
+### Webフロント
+
 - ReactJS  
   https://ja.reactjs.org/
 
@@ -205,6 +91,35 @@ web-frontendsのURLドメインはモバロケのメインWEBサイトのURLド�
   バリデーションライブラリ。Formikと組み合わせて利用する。  
   https://github.com/jquense/yup
 
+### バックエンド
+
+- gqlgen  
+
+  GraphQLのスキーマ定義ファイルからgoのコードを生成するツール
+
+  使い方の例
+  1. スケルトンプロジェクト作成  
+     ```
+     cd backend-api
+     mkdir abt
+     cd abt
+     go mod init abt
+     go get github.com/99designs/gqlgen
+     go run github.com/99designs/gqlgen init  
+     ```
+     作成されたserver.goを修正(abt/server.goを参照)  
+     SAMのテンプレート(backend-api/template.yaml)を修正  
+
+   1. GraphQLのスキーマ定義ファイルを編集  
+      abt/shema.graphqlsを参照
+
+   1. 次のコマンドでGoの定義ファイル等を自動生成  
+      ```
+      gqlgen
+      ```
+      graph/model/models_gen.go や graph/schema.resolvers.go が更新される
+
+   1. graph/schema.resolvers.goに実装コードを記述
 
 # Tips
 

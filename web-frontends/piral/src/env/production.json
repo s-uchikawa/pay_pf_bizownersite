@@ -1,4 +1,3 @@
 {
-    "apiGatewayUrl": "https://mloca-bff.mcapps.jp/api",
-    "graphqlGatewayUrl": "https://mloca-bff.mcapps.jp/graphql"
+    "apiGatewayUrl": "https://mloca-bff.mcapps.jp/graphql"
 }

@@ -14,7 +14,7 @@ export function createUiConfigurationApi(client: AuthClient, apolloClient: Apoll
   return (context) => {
     
     return {
-      getMLocaUiConfiguration() {
+      getUiConfiguration() {
         const req = (token): Promise<UiConfiguration> => {
           return apolloClient
               .query({

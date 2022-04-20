@@ -9,10 +9,6 @@ export interface AuthApi {
      * Gets the currently valid access token, if any.
      */
     getAccessToken(): Promise<string | undefined>;
-    /**
-     * regionの取得
-     */
-    getRegion(): Promise<'jp' | 'us'>;
 }
   
 export enum AuthErrorType {

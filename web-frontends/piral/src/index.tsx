@@ -37,9 +37,6 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-// GoogleMapsAPIキー
-global.window.googleMapsApiKey = env.googleMapsKey;
-
 const instance = renderInstance({
   layout,
   errors,

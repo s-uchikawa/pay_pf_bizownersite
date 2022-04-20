@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'paypf-bizownersite-bff
+
+  Sample SAM Template for paypf-bizownersite-bff
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+  Api:
+    Cors:
+      AllowMethods: '''GET,POST,OPTIONS'''
+      AllowOrigin: '''http://localhost:1234'''
+      AllowHeaders: '''*'''
+Resources:
+  AbtGraphQlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AbtGraphQlFunction
+      Handler: abt
+      Runtime: go1.x
+      Architectures:
+      - x86_64
+      Tracing: Active
+      Events:
+        Ping:
+          Type: Api
+          Properties:
+            Path: /graphql/abt/ping
+            Method: GET
+        Playground:
+          Type: Api
+          Properties:
+            Path: /graphql/abt/playground
+            Method: GET
+        Query:
+          Type: Api
+          Properties:
+            Path: /graphql/abt/query
+            Method: POST
+      Environment:
+        Variables:
+          PARAM1: VALUE
+    Metadata:
+      SamResourceId: AbtGraphQlFunction
+Outputs:
+  HelloWorldAPI:
+    Description: API Gateway endpoint URL for Prod environment for First Function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloWorldFunction:
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunctionRole
+      - Arn

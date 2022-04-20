@@ -32,12 +32,13 @@ const App: React.FC<LayoutProps> = ({ children, currentLayout }) => {
     // ホーム画面へ遷移
     const relativePath = location.pathname;
     if (relativePath == "" || relativePath == "/")  {
-      history.replace(`/places/map`);
+      history.replace(`/abt/transit`);
     }
 
     // トークン有効期限切れチェック
     const interval = setInterval(() => {
-      checkAccessTokenExpired();
+      // TBD. 一旦コメントアウト
+      // checkAccessTokenExpired();
     }, 10000);    
     
     return () => clearInterval(interval);

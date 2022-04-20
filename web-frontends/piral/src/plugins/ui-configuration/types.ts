@@ -8,7 +8,7 @@ export interface UiConfigurationApi {
     /**
      * UI構成情報を返します。
      */
-      getMLocaUiConfiguration(): Promise<UiConfiguration>;
+      getUiConfiguration(): Promise<UiConfiguration>;
 }
 
 /**
